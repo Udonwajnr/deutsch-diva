@@ -1,42 +1,308 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+
+    /* Rose color palette */
+    --rose-50: 355.7 100% 97.3%;
+    --rose-100: 355.6 100% 94.7%;
+    --rose-200: 352.7 96.1% 90%;
+    --rose-300: 352.6 95.7% 81.8%;
+    --rose-400: 351.3 94.5% 71.4%;
+    --rose-500: 349.7 89.2% 60.2%;
+    --rose-600: 346.8 77.2% 49.8%;
+    --rose-700: 345.3 82.7% 40.8%;
+    --rose-800: 343.4 79.7% 34.7%;
+    --rose-900: 341.5 75.5% 30.4%;
+    --rose-950: 341.7 75.4% 15.3%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
+@layer base {
+  * {
+    @apply border-border;
+  }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold text-rose-800 dark:text-rose-200;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply text-rose-700 dark:text-rose-300;
   }
 }
+
+@layer components {
+  /* Custom button styles */
+  .btn-rose {
+    @apply bg-rose-700 text-white hover:bg-rose-800 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2;
+  }
+
+  .btn-outline-rose {
+    @apply border-rose-200 text-rose-700 hover:bg-rose-50 hover:text-rose-800;
+  }
+
+  /* Card styles */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-md hover:border-rose-200;
+  }
+
+  /* Progress bar */
+  .progress-rose::-webkit-progress-value {
+    @apply bg-rose-600;
+  }
+
+  .progress-rose::-moz-progress-bar {
+    @apply bg-rose-600;
+  }
+
+  /* Custom form styles */
+  .form-input-rose {
+    @apply border-rose-200 focus:border-rose-500 focus:ring-rose-500;
+  }
+
+  /* Sidebar active item */
+  .sidebar-item-active {
+    @apply bg-rose-100 text-rose-900;
+  }
+
+  /* Lesson content styling */
+  .lesson-content {
+    @apply prose max-w-none prose-headings:text-rose-800 prose-a:text-rose-600 prose-a:no-underline hover:prose-a:text-rose-800 hover:prose-a:underline prose-strong:text-rose-700;
+  }
+
+  .lesson-content h2 {
+    @apply text-2xl font-bold mt-8 mb-4 text-rose-800;
+  }
+
+  .lesson-content h3 {
+    @apply text-xl font-semibold mt-6 mb-3 text-rose-700;
+  }
+
+  .lesson-content p {
+    @apply my-4 text-gray-700;
+  }
+
+  .lesson-content ul {
+    @apply my-4 list-disc pl-6;
+  }
+
+  .lesson-content li {
+    @apply mb-2;
+  }
+
+  .lesson-content strong {
+    @apply font-semibold text-rose-700;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-rose-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-rose-400;
+}
+
+/* Animation for page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Loading spinner */
+.spinner {
+  @apply h-8 w-8 animate-spin rounded-full border-4 border-rose-700 border-t-transparent;
+}
+
+/* Admin dashboard specific styles */
+.admin-card {
+  @apply transition-all duration-200 hover:shadow-md;
+}
+
+.admin-stat {
+  @apply text-3xl font-bold text-rose-800;
+}
+
+/* Course content styles */
+.course-card {
+  @apply border border-gray-200 rounded-lg overflow-hidden transition-all duration-200 hover:shadow-md hover:border-rose-200;
+}
+
+.course-image {
+  @apply aspect-video object-cover w-full;
+}
+
+.course-title {
+  @apply text-xl font-bold text-rose-800 mt-4 mb-2;
+}
+
+.course-description {
+  @apply text-gray-600 text-sm;
+}
+
+/* Lesson completion indicator */
+.lesson-completed {
+  @apply text-green-600 font-medium flex items-center gap-1;
+}
+
+.lesson-incomplete {
+  @apply text-gray-500 flex items-center gap-1;
+}
+
+/* Video container */
+.video-container {
+  @apply aspect-video rounded-lg overflow-hidden shadow-md;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+
+  h3 {
+    @apply text-lg;
+  }
+
+  .lesson-content h2 {
+    @apply text-xl;
+  }
+
+  .lesson-content h3 {
+    @apply text-lg;
+  }
+}
+
