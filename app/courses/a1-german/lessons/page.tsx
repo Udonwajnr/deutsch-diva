@@ -1,95 +1,116 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { BookOpen, CheckCircle, Clock, Play } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useAuth } from "@/hooks/use-auth"
+import { type Course, type Lesson, getCourse, getUserCourseProgress } from "@/lib/course"
 
 export default function LessonsPage() {
-  // Mock lessons data
-  const lessons = [
-    {
-      id: 1,
-      title: "Introduction to German",
-      description: "Learn about the German language and its importance.",
-      duration: "45 min",
-      completed: true,
-    },
-    {
-      id: 2,
-      title: "Basic Greetings",
-      description: "Learn how to greet people in German.",
-      duration: "60 min",
-      completed: true,
-    },
-    {
-      id: 3,
-      title: "Numbers 1-20",
-      description: "Master counting in German from 1 to 20.",
-      duration: "45 min",
-      completed: true,
-    },
-    {
-      id: 4,
-      title: "Common Phrases",
-      description: "Learn everyday phrases to help you communicate.",
-      duration: "60 min",
-      completed: false,
-    },
-    {
-      id: 5,
-      title: "Basic Grammar",
-      description: "Introduction to German grammar rules.",
-      duration: "75 min",
-      completed: false,
-    },
-    {
-      id: 6,
-      title: "Family Members",
-      description: "Learn vocabulary related to family members.",
-      duration: "60 min",
-      completed: false,
-    },
-    {
-      id: 7,
-      title: "Food and Drinks",
-      description: "Essential vocabulary for ordering food and drinks.",
-      duration: "45 min",
-      completed: false,
-    },
-    {
-      id: 8,
-      title: "Telling Time",
-      description: "Learn how to tell time in German.",
-      duration: "60 min",
-      completed: false,
-    },
-    {
-      id: 9,
-      title: "Days and Months",
-      description: "Learn the days of the week and months of the year.",
-      duration: "45 min",
-      completed: false,
-    },
-    {
-      id: 10,
-      title: "Review and Practice",
-      description: "Review everything you've learned and practice your skills.",
-      duration: "90 min",
-      completed: false,
-    },
-  ]
+  const { user, loading: authLoading } = useAuth()
+  const router = useRouter()
+  const [course, setCourse] = useState<Course | null>(null)
+  const [lessons, setLessons] = useState<Lesson[]>([])
+  const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push("/login?redirect=/courses/a1-german/lessons")
+    }
+  }, [user, authLoading, router])
+
+  // Fetch course data and user progress
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user) return
+
+      try {
+        setLoading(true)
+        // Fetch the A1 German course
+        const courseData = await getCourse("8KAqxrxAOmFhrkqmM8ES")
+
+        if (!courseData) {
+          setError("Course not found")
+          setLoading(false)
+          return
+        }
+
+        setCourse(courseData)
+        setLessons(courseData.lessons)
+
+        // Fetch user progress for this course
+        const progress = await getUserCourseProgress(user.uid, "8KAqxrxAOmFhrkqmM8ES")
+        setCompletedLessonIds(progress.completedLessons || [])
+      } catch (err) {
+        console.error("Error fetching course data:", err)
+        setError("Failed to load course data. Please try again later.")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (user) {
+      fetchData()
+    }
+  }, [user])
 
   // Calculate progress
-  const completedLessons = lessons.filter((lesson) => lesson.completed).length
-  const progress = (completedLessons / lessons.length) * 100
+  const completedLessons = completedLessonIds.length
+  const progress = lessons.length > 0 ? (completedLessons / lessons.length) * 100 : 0
+
+  if (authLoading || loading) {
+    return <LessonsPageSkeleton />
+  }
+
+  if (error) {
+    return (
+      <div className="container py-10">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center">
+          <h2 className="mb-2 text-xl font-semibold text-red-700">Error</h2>
+          <p className="text-red-600">{error}</p>
+          <Button
+            variant="outline"
+            className="mt-4 border-red-200 text-red-700 hover:bg-red-100"
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!course) {
+    return (
+      <div className="container py-10">
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-center">
+          <h2 className="mb-2 text-xl font-semibold text-amber-700">Course Not Found</h2>
+          <p className="text-amber-600">The requested course could not be found.</p>
+          <Link href="/courses">
+            <Button variant="outline" className="mt-4 border-amber-200 text-amber-700 hover:bg-amber-100">
+              Browse Courses
+            </Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="container py-10">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-rose-800">A1 German Course Lessons</h1>
-          <p className="mt-2 text-gray-600">Track your progress through all lessons in the A1 German course.</p>
+          <h1 className="text-3xl font-bold text-rose-800">{course.title} Lessons</h1>
+          <p className="mt-2 text-gray-600">Track your progress through all lessons in the {course.title} course.</p>
         </div>
 
         <div className="space-y-2">
@@ -103,43 +124,88 @@ export default function LessonsPage() {
         </div>
 
         <div className="space-y-4">
-          {lessons.map((lesson) => (
-            <Card key={lesson.id} className={lesson.completed ? "border-green-200" : ""}>
-              <CardContent className="p-4">
-                <div className="flex items-start gap-4">
-                  <div className={`rounded-full p-2 ${lesson.completed ? "bg-green-100" : "bg-rose-100"}`}>
-                    {lesson.completed ? (
-                      <CheckCircle className="h-5 w-5 text-green-600" />
-                    ) : (
-                      <BookOpen className="h-5 w-5 text-rose-700" />
-                    )}
-                  </div>
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium">
-                        Lesson {lesson.id}: {lesson.title}
-                      </h3>
-                      <div className="flex items-center gap-1 text-sm text-gray-500">
-                        <Clock className="h-4 w-4" />
-                        {lesson.duration}
+          {lessons.map((lesson) => {
+            const isCompleted = completedLessonIds.includes(lesson.id)
+
+            return (
+              <Card key={lesson.id} className={isCompleted ? "border-green-200" : ""}>
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-4">
+                    <div className={`rounded-full p-2 ${isCompleted ? "bg-green-100" : "bg-rose-100"}`}>
+                      {isCompleted ? (
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                      ) : (
+                        <BookOpen className="h-5 w-5 text-rose-700" />
+                      )}
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-medium">
+                          Lesson {lesson.order}: {lesson.title}
+                        </h3>
+                        <div className="flex items-center gap-1 text-sm text-gray-500">
+                          <Clock className="h-4 w-4" />
+                          {lesson.duration}
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-500">{lesson.description}</p>
+                      <div className="pt-2">
+                        <Link href={`/courses/a1-german/lessons/${lesson.id}`}>
+                          <Button
+                            variant={isCompleted ? "outline" : "default"}
+                            className={
+                              isCompleted
+                                ? "border-green-200 text-green-700 hover:bg-green-50"
+                                : "bg-rose-700 hover:bg-rose-800"
+                            }
+                          >
+                            {isCompleted ? "Review Lesson" : "Start Lesson"}
+                            <Play className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-500">{lesson.description}</p>
-                    <div className="pt-2">
-                      <Link href={`/courses/a1-german/lessons/${lesson.id}`}>
-                        <Button
-                          variant={lesson.completed ? "outline" : "default"}
-                          className={
-                            lesson.completed
-                              ? "border-green-200 text-green-700 hover:bg-green-50"
-                              : "bg-rose-700 hover:bg-rose-800"
-                          }
-                        >
-                          {lesson.completed ? "Review Lesson" : "Start Lesson"}
-                          <Play className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LessonsPageSkeleton() {
+  return (
+    <div className="container py-10">
+      <div className="space-y-6">
+        <div>
+          <Skeleton className="h-10 w-2/3" />
+          <Skeleton className="mt-2 h-5 w-full" />
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-36" />
+          </div>
+          <Skeleton className="h-2 w-full" />
+        </div>
+
+        <div className="space-y-4">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Card key={index}>
+              <CardContent className="p-4">
+                <div className="flex items-start gap-4">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-5 w-1/3" />
+                      <Skeleton className="h-4 w-16" />
                     </div>
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-9 w-32" />
                   </div>
                 </div>
               </CardContent>

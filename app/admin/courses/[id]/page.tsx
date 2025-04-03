@@ -24,7 +24,7 @@ export default function ViewCoursePage() {
   useEffect(() => {
     async function fetchCourse() {
       try {
-        const courseData = await getCourse("8KAqxrxAOmFhrkqmM8ES")
+        const courseData = await getCourse(courseId)
         if (!courseData) {
           toast("Error",{
             description: "Course not found.",

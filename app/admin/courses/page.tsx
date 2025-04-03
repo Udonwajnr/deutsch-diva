@@ -39,7 +39,7 @@ export default function AdminCoursesPage() {
         setCourses(coursesData)
       } catch (error) {
         console.error("Error fetching courses:", error)
-        toast.error( "Error",{
+        toast("Error",{
           description: "Failed to load courses. Please try again.",
         })
       } finally {
@@ -76,7 +76,7 @@ export default function AdminCoursesPage() {
       // Update local state
       setCourses(courses.filter((course) => course.id !== courseToDelete))
 
-      toast.success("Success",{
+      toast("Success",{
         description: "Course has been deleted successfully.",
       })
     } catch (error) {
@@ -97,7 +97,7 @@ export default function AdminCoursesPage() {
         <CollapsibleSidebar variant="admin" />
 
         {/* Main Content */}
-        <main className="flex-1 p-6">
+        <main className="md:ml-16 lg:ml-64 flex-1 p-4 md:p-6 pt-16 md:pt-6">
           <div className="flex flex-col space-y-6">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold text-rose-800">Course Management</h1>

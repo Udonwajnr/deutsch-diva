@@ -111,6 +111,23 @@ export async function createCourse(courseData: Omit<Course, "id" | "lessons">): 
   }
 }
 
+// Update a course
+export async function updateCourse(
+  courseId: string,
+  courseData: Partial<Omit<Course, "id" | "lessons">>,
+): Promise<void> {
+  try {
+    const courseRef = doc(db, "courses", courseId)
+    await updateDoc(courseRef, {
+      ...courseData,
+      updatedAt: new Date().toISOString(),
+    })
+  } catch (error) {
+    console.error("Error updating course:", error)
+    throw error
+  }
+}
+
 // Add a lesson to a course
 export async function addLesson(courseId: string, lessonData: Omit<Lesson, "id">): Promise<string> {
   try {

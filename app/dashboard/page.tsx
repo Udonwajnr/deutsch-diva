@@ -20,7 +20,7 @@ export default function DashboardPage() {
         <CollapsibleSidebar />
 
         {/* Main Content */}
-        <main className="flex-1 p-6">
+        <main className="md:ml-16 lg:ml-64 flex-1 p-4 md:p-6 pt-16 md:pt-6">
           <div className="flex flex-col space-y-6">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold text-rose-800">Dashboard</h1>

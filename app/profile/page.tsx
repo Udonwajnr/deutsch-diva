@@ -104,7 +104,7 @@ export default function ProfilePage() {
       })
     } catch (error) {
       console.error("Error updating profile:", error)
-      toast( "Error",{
+      toast("Error",{        
         description: "Failed to update profile. Please try again.",
       })
     } finally {
@@ -119,7 +119,7 @@ export default function ProfilePage() {
         <CollapsibleSidebar />
 
         {/* Main Content */}
-        <main className="flex-1 p-6">
+        <main className="md:ml-16 lg:ml-64 flex-1 p-4 md:p-6 pt-16 md:pt-6">
           {loading ? (
             <div className="flex h-40 items-center justify-center">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-700 border-t-transparent"></div>
