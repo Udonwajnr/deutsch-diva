@@ -2,26 +2,24 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { BookOpen, ChevronDown, Download, FileText, Home, LogOut, Search, Settings, Upload, Users } from "lucide-react"
+import { Download, Search, Upload } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AuthGuard } from "@/components/auth-guard"
+import { CollapsibleSidebar } from "@/components/collapsible-sidebar"
 import { getAllCourses } from "@/lib/course"
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { useAuth } from "@/hooks/use-auth" // Import useAuth hook
 
 export default function AdminPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [courses, setCourses] = useState<any[]>([])
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const auth = useAuth() // Initialize useAuth hook
 
   useEffect(() => {
     async function fetchData() {
@@ -107,59 +105,7 @@ export default function AdminPage() {
     <AuthGuard requireAdmin>
       <div className="flex min-h-screen">
         {/* Sidebar */}
-        <aside className="hidden w-64 flex-col bg-rose-50 p-4 md:flex">
-          <div className="flex items-center gap-2 mb-8">
-            <BookOpen className="h-6 w-6 text-rose-700" />
-            <span className="text-xl font-bold text-rose-800">DeutschDiva</span>
-            <span className="ml-auto text-xs font-medium bg-rose-200 text-rose-800 px-2 py-0.5 rounded-full">
-              Admin
-            </span>
-          </div>
-          <nav className="space-y-2">
-            <Link href="/admin" className="flex items-center gap-2 rounded-lg bg-rose-100 px-3 py-2 text-rose-900">
-              <FileText className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              href="/admin/users"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <Users className="h-5 w-5" />
-              Users
-            </Link>
-            <Link
-              href="/admin/courses"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <BookOpen className="h-5 w-5" />
-              Courses
-            </Link>
-            <Link
-              href="/admin/settings"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <Settings className="h-5 w-5" />
-              Settings
-            </Link>
-          </nav>
-          <div className="mt-auto">
-            <Separator className="my-4" />
-            <Link
-              href="/"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <Home className="h-5 w-5" />
-              Back to Home
-            </Link>
-            <button
-              onClick={() => auth.logout()}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <LogOut className="h-5 w-5" />
-              Log Out
-            </button>
-          </div>
-        </aside>
+        <CollapsibleSidebar variant="admin" />
 
         {/* Main Content */}
         <main className="flex-1 p-6">
@@ -292,9 +238,11 @@ export default function AdminPage() {
                                       {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "N/A"}
                                     </td>
                                     <td className="p-4 align-middle">
-                                      <Button variant="ghost" size="sm">
-                                        View
-                                      </Button>
+                                      <Link href={`/admin/users/${user.id}`}>
+                                        <Button variant="ghost" size="sm">
+                                          View
+                                        </Button>
+                                      </Link>
                                     </td>
                                   </tr>
                                 )
@@ -339,7 +287,13 @@ export default function AdminPage() {
                           <div key={course.id} className="rounded-lg border">
                             <div className="flex items-center justify-between p-4">
                               <div className="flex items-center gap-2">
-                                <BookOpen className="h-5 w-5 text-rose-700" />
+                                <div className="h-10 w-10 rounded-md bg-rose-100 flex items-center justify-center">
+                                  <img
+                                    src={course.imageUrl || "/placeholder.svg?height=40&width=40"}
+                                    alt={course.title}
+                                    className="h-10 w-10 rounded-md object-cover"
+                                  />
+                                </div>
                                 <div>
                                   <h3 className="font-medium">{course.title}</h3>
                                   <p className="text-sm text-gray-500">
@@ -348,13 +302,20 @@ export default function AdminPage() {
                                 </div>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="sm">
-                                  Edit
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  View
-                                </Button>
-                                <ChevronDown className="h-4 w-4 text-gray-500" />
+                                <Link href={`/admin/courses/${course.id}/edit`}>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="border-rose-200 text-rose-700 hover:bg-rose-50"
+                                  >
+                                    Edit
+                                  </Button>
+                                </Link>
+                                <Link href={`/admin/courses/${course.id}`}>
+                                  <Button variant="ghost" size="sm">
+                                    View
+                                  </Button>
+                                </Link>
                               </div>
                             </div>
                           </div>

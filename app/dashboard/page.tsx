@@ -1,90 +1,23 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import {
-  BookOpen,
-  CheckCircle,
-  Clock,
-  GraduationCap,
-  Home,
-  LayoutDashboard,
-  LogOut,
-  Settings,
-  User,
-} from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AuthGuard } from "@/components/auth-guard"
 import { useAuth } from "@/contexts/auth-context"
 import { CourseViewer } from "../../components/course-viewer"
+import { CollapsibleSidebar } from "@/components/collapsible-sidebar"
+import { CheckCircle, Clock, GraduationCap, User } from "lucide-react"
 
 export default function DashboardPage() {
-  const { user, userData, logout } = useAuth()
+  const { user, userData } = useAuth()
   const [activeTab, setActiveTab] = useState("course")
 
   return (
     <AuthGuard>
       <div className="flex min-h-screen">
         {/* Sidebar */}
-        <aside className="hidden w-64 flex-col bg-rose-50 p-4 md:flex">
-          <div className="flex items-center gap-2 mb-8">
-            <BookOpen className="h-6 w-6 text-rose-700" />
-            <span className="text-xl font-bold text-rose-800">LinguaLearn</span>
-          </div>
-          <nav className="space-y-2">
-            <Link href="/dashboard" className="flex items-center gap-2 rounded-lg bg-rose-100 px-3 py-2 text-rose-900">
-              <LayoutDashboard className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              href="/courses/a1-german"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <BookOpen className="h-5 w-5" />
-              My Course
-            </Link>
-            <Link
-              href="/progress"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <CheckCircle className="h-5 w-5" />
-              Progress
-            </Link>
-            <Link
-              href="/profile"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <User className="h-5 w-5" />
-              Profile
-            </Link>
-            <Link
-              href="/settings"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <Settings className="h-5 w-5" />
-              Settings
-            </Link>
-          </nav>
-          <div className="mt-auto">
-            <Separator className="my-4" />
-            <Link
-              href="/"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <Home className="h-5 w-5" />
-              Back to Home
-            </Link>
-            <button
-              onClick={() => logout()}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-rose-100 hover:text-rose-900"
-            >
-              <LogOut className="h-5 w-5" />
-              Log Out
-            </button>
-          </div>
-        </aside>
+        <CollapsibleSidebar />
 
         {/* Main Content */}
         <main className="flex-1 p-6">

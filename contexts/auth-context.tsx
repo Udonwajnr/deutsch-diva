@@ -26,6 +26,8 @@ interface UserData {
   progress?: Record<string, any>
   isAdmin?: boolean | false
   firstName?:string|null
+  lastName?:string|null
+
 
 }
 
