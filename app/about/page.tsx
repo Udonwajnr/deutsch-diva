@@ -30,7 +30,7 @@ export default function AboutPage() {
           </div>
           <div className="rounded-xl overflow-hidden shadow-lg">
             <img
-              src="/placeholder.svg?height=400&width=600"
+              src="/img4.jpg"
               alt="Women learning German"
               className="w-full h-full object-cover"
             />
@@ -82,7 +82,7 @@ export default function AboutPage() {
         <div className="grid gap-10 md:grid-cols-2 items-center">
           <div className="order-2 md:order-1 rounded-xl overflow-hidden shadow-lg">
             <img
-              src="/placeholder.svg?height=400&width=600"
+              src="/img2.jpg"
               alt="German language learning"
               className="w-full h-full object-cover"
             />

@@ -24,6 +24,9 @@ interface UserData {
   gender?: string
   enrolledCourses?: string[]
   progress?: Record<string, any>
+  isAdmin?: boolean | false
+  firstName?:string|null
+
 }
 
 interface AuthContextType {
@@ -37,6 +40,7 @@ interface AuthContextType {
   updateUserData: (data: Partial<UserData>) => Promise<void>
 }
 
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -44,6 +48,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userData, setUserData] = useState<UserData | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+
+  console.log(userData)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -78,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe()
   }, [])
 
-  const signUp = async (email: string, password: string, firstName: string, lastName: string, gender: string) => {
+  const signUp = async (email: string, password: string, firstName: string, lastName: string, gender: string,isAdmin:boolean) => {
     try {
       // Verify gender is female
       if (gender.toLowerCase() !== "female") {
@@ -100,6 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         lastName,
         gender,
         enrolledCourses: [],
+        isAdmin:false,
         createdAt: new Date().toISOString(),
       })
 
@@ -135,6 +142,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           lastName: user.displayName?.split(" ").slice(1).join(" ") || "",
           gender: "unknown", // We'll need to ask for gender later
           enrolledCourses: [],
+          isAdmin:false,
           createdAt: new Date().toISOString(),
         })
 

@@ -25,7 +25,7 @@ export default function A1GermanCoursePage() {
     async function fetchData() {
       try {
         // For simplicity, we're assuming there's only one course (A1 German)
-        const courseId = "a1-german"
+        const courseId = "8KAqxrxAOmFhrkqmM8ES"
         const courseData = await getCourse(courseId)
 
         if (courseData) {
@@ -131,10 +131,10 @@ export default function A1GermanCoursePage() {
               <GraduationCap className="h-4 w-4 text-rose-700" />
               <span className="text-sm">{course.level}</span>
             </div>
-            <div className="flex items-center gap-1">
+            {/* <div className="flex items-center gap-1">
               <Star className="h-4 w-4 text-yellow-500" />
               <span className="text-sm">4.8 (124 reviews)</span>
-            </div>
+            </div> */}
           </div>
 
           <div>
