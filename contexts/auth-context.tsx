@@ -27,15 +27,13 @@ interface UserData {
   isAdmin?: boolean | false
   firstName?:string|null
   lastName?:string|null
-
-
 }
 
 interface AuthContextType {
   user: User | null
   userData: UserData | null
   loading: boolean
-  signUp: (email: string, password: string, firstName: string, lastName: string, gender: string) => Promise<void>
+  signUp: (email: string, password: string, firstName: string, lastName: string, gender: string,isAdmin: boolean) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
   signInWithGoogle: () => Promise<void>
   logout: () => Promise<void>

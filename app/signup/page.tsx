@@ -41,7 +41,7 @@ export default function SignupPage() {
     setIsLoading(true)
 
     try {
-      await signUp(formData.email, formData.password, formData.firstName, formData.lastName, formData.gender)
+      await signUp(formData.email, formData.password, formData.firstName, formData.lastName, formData.gender,false)
 
       toast("Account created!",{
         description: "You've successfully signed up for DeutschDiva.",
