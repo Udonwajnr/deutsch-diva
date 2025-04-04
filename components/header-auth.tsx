@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { User } from "lucide-react"
-
+import GardenGithubFill12 from "./icons/GardenGithubFill12"
 export function HeaderAuth() {
   const { user, userData, logout } = useAuth()
 
@@ -56,10 +56,12 @@ export function HeaderAuth() {
         <DropdownMenuItem asChild>
           <Link href="/progress">Progress</Link>
         </DropdownMenuItem>
+
         {userData?.isAdmin && (
           <DropdownMenuItem asChild>
             <Link href="/admin">Admin Dashboard</Link>
           </DropdownMenuItem>
+
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem

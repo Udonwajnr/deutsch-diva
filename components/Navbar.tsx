@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { BookOpen, Menu, X, LogIn, UserPlus } from "lucide-react"
+import { BookOpen, Menu, X, LogIn, UserPlus,Github } from "lucide-react"
 import { HeaderAuth } from "./header-auth"
 import { Button } from "./ui/button"
 import { cn } from "@/lib/utils"
+import GardenGithubFill12 from "./icons/GardenGithubFill12"
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -79,6 +80,11 @@ const Navbar = () => {
           <div className="hidden md:block">
             <HeaderAuth />
           </div>
+          <div className="hidden md:block">
+            <Link href="https://github.com/Udonwajnr/deutsch-diva.git" className="flex items-center justify-center  hover:bg-rose-100 px-3 gap-x-2">
+                <GardenGithubFill12 className="h-5 w-5 " />
+            </Link>
+          </div>
 
           {/* Mobile Auth & Menu */}
           <div className="flex md:hidden items-center gap-2">
@@ -99,7 +105,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Improved */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="fixed h-screen inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
           <div
@@ -167,6 +173,13 @@ const Navbar = () => {
                       Sign up
                     </Button>
                   </Link>
+
+                  <div className="hidden md:block">
+                        <Link href="https://github.com/Udonwajnr/deutsch-diva.git" className="flex items-center justify-center  hover:bg-rose-100 px-3 gap-x-2">
+                            <GardenGithubFill12 className="h-5 w-5 " />
+                        </Link>
+                </div>
+
                 </div>
               </div>
             </div>
