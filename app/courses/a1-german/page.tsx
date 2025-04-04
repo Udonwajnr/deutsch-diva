@@ -209,7 +209,7 @@ export default function A1GermanCoursePage() {
 
             <div>
               <h2 className="text-xl font-bold text-rose-800">About the Instructor</h2>
-              <div className="mt-4 flex items-start gap-4">
+              <div className="mt-4 flex items-start gap-4 bg-">
                 <div className="h-16 w-16 rounded-full bg-rose-100 flex items-center justify-center">
                   <GraduationCap className="h-8 w-8 text-rose-700" />
                 </div>

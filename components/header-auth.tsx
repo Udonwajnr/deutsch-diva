@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { User } from "lucide-react"
 
-
 export function HeaderAuth() {
   const { user, userData, logout } = useAuth()
 
@@ -34,8 +33,8 @@ export function HeaderAuth() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-rose-100">
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full bg-rose-100">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full ">
             <User className="h-4 w-4 text-rose-700" />
           </div>
         </Button>
