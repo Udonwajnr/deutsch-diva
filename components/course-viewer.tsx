@@ -17,7 +17,11 @@ import type { Course, Lesson } from "@/lib/course"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
-export function CourseViewer() {
+interface CourseViewerProps {
+  initialLessonId?: string | null
+}
+
+export function CourseViewer({ initialLessonId = null }: CourseViewerProps) {
   const router = useRouter()
   const { user } = useAuth()
   const [course, setCourse] = useState<Course | null>(null)
@@ -31,7 +35,7 @@ export function CourseViewer() {
 
       try {
         // For simplicity, we're assuming there's only one course (A1 German)
-        const courseId = "8KAqxrxAOmFhrkqmM8ES"
+        const courseId = "a1-german"
         const courseData = await getCourse(courseId)
 
         if (courseData) {
@@ -41,12 +45,23 @@ export function CourseViewer() {
           const progress = await getUserCourseProgress(user.uid, courseId)
           setCompletedLessons(progress.completedLessons || [])
 
-          // Set current lesson (either last accessed or first lesson)
-          const lastAccessedLesson = progress.lastAccessedLesson
-            ? courseData.lessons.find((l) => l.id === progress.lastAccessedLesson)
-            : null
+          // Set current lesson based on initialLessonId, last accessed, or first lesson
+          let lessonToLoad = null
 
-          setCurrentLesson(lastAccessedLesson || courseData.lessons[0])
+          if (initialLessonId) {
+            lessonToLoad = courseData.lessons.find((l) => l.id === initialLessonId)
+          }
+
+          if (!lessonToLoad && progress.lastAccessedLesson) {
+            lessonToLoad = courseData.lessons.find((l) => l.id === progress.lastAccessedLesson)
+          }
+
+          setCurrentLesson(lessonToLoad || courseData.lessons[0])
+
+          // If we loaded a specific lesson from URL, update the last accessed lesson
+          if (initialLessonId && lessonToLoad) {
+            updateLastAccessedLesson(user.uid, courseId, initialLessonId)
+          }
         }
       } catch (error) {
         console.error("Error fetching course:", error)
@@ -59,7 +74,19 @@ export function CourseViewer() {
     }
 
     fetchCourse()
-  }, [user])
+  }, [user, initialLessonId])
+
+  const updateLastAccessedLesson = async (userId: string, courseId: string, lessonId: string) => {
+    try {
+      const userDocRef = doc(db, "users", userId)
+      await updateDoc(userDocRef, {
+        [`progress.${courseId}.lastAccessedLesson`]: lessonId,
+        [`progress.${courseId}.lastAccessedAt`]: new Date().toISOString(),
+      })
+    } catch (error) {
+      console.error("Error updating last accessed lesson:", error)
+    }
+  }
 
   const handleLessonComplete = async () => {
     if (!user || !course || !currentLesson) return
@@ -89,17 +116,11 @@ export function CourseViewer() {
     if (lesson) {
       setCurrentLesson(lesson)
 
-      // Update last accessed lesson in the database directly using Firebase
-      try {
-        // Update the user document in Firestore
-        const userDocRef = doc(db, "users", user.uid)
-        await updateDoc(userDocRef, {
-          [`progress.${course.id}.lastAccessedLesson`]: lessonId,
-          [`progress.${course.id}.lastAccessedAt`]: new Date().toISOString(),
-        })
-      } catch (error) {
-        console.error("Error updating last accessed lesson:", error)
-      }
+      // Update last accessed lesson in the database
+      await updateLastAccessedLesson(user.uid, course.id, lessonId)
+
+      // Update URL with the new lesson ID
+      router.push(`/dashboard?lessonId=${lessonId}`, { scroll: false })
     }
   }
 
@@ -118,7 +139,7 @@ export function CourseViewer() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="spinner" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-700 border-t-transparent"></div>
       </div>
     )
   }
@@ -239,7 +260,12 @@ export function CourseViewer() {
         </div>
 
         <div>
-          <CourseProgressTracker courseId={course.id} lessons={course.lessons} currentLessonId={currentLesson.id} />
+          <CourseProgressTracker
+            courseId={course.id}
+            lessons={course.lessons}
+            currentLessonId={currentLesson.id}
+            onLessonSelect={navigateToLesson}
+          />
         </div>
       </div>
     </div>

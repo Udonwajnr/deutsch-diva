@@ -16,7 +16,7 @@ import { CollapsibleSidebar } from "@/components/collapsible-sidebar"
 export default function ViewCoursePage() {
   const params = useParams()
   const router = useRouter()
-  const courseId = params.id as string
+  const courseId = "8KAqxrxAOmFhrkqmM8ES"
 
   const [course, setCourse] = useState<Course | null>(null)
   const [loading, setLoading] = useState(true)
@@ -60,10 +60,10 @@ export default function ViewCoursePage() {
   if (!course) return null
 
   return (
-    <AuthGuard requireAdmin>
+    // <AuthGuard requireAdmin>
       <div className="flex min-h-screen">
         {/* Sidebar */}
-        <CollapsibleSidebar variant="admin" />
+        {/* <CollapsibleSidebar variant="admin" /> */}
 
         {/* Main Content */}
         <main className="md:ml-16 lg:ml-64 flex-1 p-4 md:p-6 pt-16 md:pt-6">
@@ -165,7 +165,7 @@ export default function ViewCoursePage() {
           </div>
         </main>
       </div>
-    </AuthGuard>
+    // </AuthGuard>
   )
 }
 

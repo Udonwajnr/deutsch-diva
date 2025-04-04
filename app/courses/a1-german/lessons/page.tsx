@@ -20,6 +20,7 @@ export default function LessonsPage() {
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isEnrolled, setIsEnrolled] = useState(false)
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function LessonsPage() {
       try {
         setLoading(true)
         // Fetch the A1 German course
-        const courseData = await getCourse("8KAqxrxAOmFhrkqmM8ES")
+        const courseData = await getCourse("a1-german")
 
         if (!courseData) {
           setError("Course not found")
@@ -48,8 +49,9 @@ export default function LessonsPage() {
         setLessons(courseData.lessons)
 
         // Fetch user progress for this course
-        const progress = await getUserCourseProgress(user.uid, "8KAqxrxAOmFhrkqmM8ES")
+        const progress = await getUserCourseProgress(user.uid, "a1-german")
         setCompletedLessonIds(progress.completedLessons || [])
+        setIsEnrolled(progress.enrolledAt !== null)
       } catch (err) {
         console.error("Error fetching course data:", err)
         setError("Failed to load course data. Please try again later.")
@@ -66,6 +68,16 @@ export default function LessonsPage() {
   // Calculate progress
   const completedLessons = completedLessonIds.length
   const progress = lessons.length > 0 ? (completedLessons / lessons.length) * 100 : 0
+
+  // Handle starting a lesson
+  const handleStartLesson = (lessonId: string) => {
+    if (!isEnrolled) {
+      router.push("/courses/a1-german")
+      return
+    }
+
+    router.push(`/dashboard?lessonId=${lessonId}`)
+  }
 
   if (authLoading || loading) {
     return <LessonsPageSkeleton />
@@ -99,6 +111,20 @@ export default function LessonsPage() {
             <Button variant="outline" className="mt-4 border-amber-200 text-amber-700 hover:bg-amber-100">
               Browse Courses
             </Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isEnrolled) {
+    return (
+      <div className="container py-10">
+        <div className="rounded-lg border border-rose-200 bg-rose-50 p-6 text-center">
+          <h2 className="mb-2 text-xl font-semibold text-rose-700">Enrollment Required</h2>
+          <p className="text-rose-600 mb-4">You need to enroll in this course before you can access the lessons.</p>
+          <Link href="/courses/a1-german">
+            <Button className="bg-rose-700 hover:bg-rose-800">Enroll Now</Button>
           </Link>
         </div>
       </div>
@@ -150,19 +176,18 @@ export default function LessonsPage() {
                       </div>
                       <p className="text-sm text-gray-500">{lesson.description}</p>
                       <div className="pt-2">
-                        <Link href={`/courses/a1-german/lessons/${lesson.id}`}>
-                          <Button
-                            variant={isCompleted ? "outline" : "default"}
-                            className={
-                              isCompleted
-                                ? "border-green-200 text-green-700 hover:bg-green-50"
-                                : "bg-rose-700 hover:bg-rose-800"
-                            }
-                          >
-                            {isCompleted ? "Review Lesson" : "Start Lesson"}
-                            <Play className="ml-2 h-4 w-4" />
-                          </Button>
-                        </Link>
+                        <Button
+                          variant={isCompleted ? "outline" : "default"}
+                          className={
+                            isCompleted
+                              ? "border-green-200 text-green-700 hover:bg-green-50"
+                              : "bg-rose-700 hover:bg-rose-800"
+                          }
+                          onClick={() => handleStartLesson(lesson.id)}
+                        >
+                          {isCompleted ? "Review Lesson" : "Start Lesson"}
+                          <Play className="ml-2 h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   </div>

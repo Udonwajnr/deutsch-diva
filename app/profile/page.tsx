@@ -257,14 +257,7 @@ export default function ProfilePage() {
                         {formData.firstName} {formData.lastName}
                       </h3>
                       <p className="text-sm text-gray-500">{formData.email}</p>
-                      <Separator className="my-4" />
-                      <div className="w-full space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-500">Course Progress</span>
-                          <span className="text-sm font-medium">{courseProgress?.progressPercentage || 0}%</span>
-                        </div>
-                        <Progress value={courseProgress?.progressPercentage || 0} className="h-2" />
-                      </div>
+                     
                     </CardContent>
                   </Card>
 

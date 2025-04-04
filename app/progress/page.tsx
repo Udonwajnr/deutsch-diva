@@ -26,7 +26,7 @@ export default function ProgressPage() {
 
       try {
         // For simplicity, we're assuming there's only one course (A1 German)
-        const courseId = "a1-german"
+        const courseId = "8KAqxrxAOmFhrkqmM8ES"
         const courseData = await getCourse(courseId)
 
         if (courseData) {
