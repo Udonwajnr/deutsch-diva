@@ -36,7 +36,7 @@ export default function DashboardPage() {
       try {
         setLoading(true)
         // For simplicity, we're assuming there's only one course (A1 German)
-        const courseId = "a1-german"
+        const courseId = "8KAqxrxAOmFhrkqmM8ES"
         const course = await getCourse(courseId)
         setCourseData(course)
 

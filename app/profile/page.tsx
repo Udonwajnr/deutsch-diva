@@ -45,7 +45,7 @@ export default function ProfilePage() {
 
       try {
         // For simplicity, we're assuming there's only one course (A1 German)
-        const courseId = "a1-german"
+        const courseId = "8KAqxrxAOmFhrkqmM8ES"
         const courseData = await getCourse(courseId)
         const progress = await getUserCourseProgress(user.uid, courseId)
 

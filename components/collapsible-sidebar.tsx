@@ -91,11 +91,11 @@ export function CollapsibleSidebar({ variant = "user" }: { variant?: "user" | "a
       icon: User,
       label: "Profile",
     },
-    {
-      href: "/settings",
-      icon: Settings,
-      label: "Settings",
-    },
+    // {
+    //   href: "/settings",
+    //   icon: Settings,
+    //   label: "Settings",
+    // },
   ]
 
   const adminLinks: SidebarLink[] = [

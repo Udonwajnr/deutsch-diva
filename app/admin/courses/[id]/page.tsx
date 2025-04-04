@@ -16,7 +16,7 @@ import { CollapsibleSidebar } from "@/components/collapsible-sidebar"
 export default function ViewCoursePage() {
   const params = useParams()
   const router = useRouter()
-  const courseId = params.id as string
+  const courseId = "8KAqxrxAOmFhrkqmM8ES"  
 
   const [course, setCourse] = useState<Course | null>(null)
   const [loading, setLoading] = useState(true)
