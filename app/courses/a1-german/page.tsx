@@ -87,11 +87,14 @@ export default function A1GermanCoursePage() {
 
   if (loading) {
     return (
-      <div className="container py-10">
-        <div className="flex h-96 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-700 border-t-transparent"></div>
+      <>
+        <Navbar/>
+        <div className="container py-10">
+          <div className="flex h-96 items-center justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-700 border-t-transparent"></div>
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 
@@ -180,15 +183,15 @@ export default function A1GermanCoursePage() {
                   <Card key={lesson.id}>
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-4">
-                        <div className="space-y-1">
+                        <div className="flex-1 space-y-1">
                           <h3 className="font-medium">
                             Lesson {lesson.order}: {lesson.title}
                           </h3>
                           <p className="text-sm text-gray-500">{lesson.description}</p>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                          <Clock className="h-4 w-4" />
-                          {lesson.duration}
+                        <div className="flex-shrink-0 flex items-center gap-1.5 text-sm text-gray-500 whitespace-nowrap min-w-[80px] justify-end">
+                          <Clock className="h-4 w-4 flex-shrink-0" />
+                          <span>{lesson.duration}</span>
                         </div>
                       </div>
                     </CardContent>

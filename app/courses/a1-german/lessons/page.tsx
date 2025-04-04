@@ -50,7 +50,7 @@ export default function LessonsPage() {
         setLessons(courseData.lessons)
 
         // Fetch user progress for this course
-        const progress = await getUserCourseProgress(user.uid, "a1-german")
+        const progress = await getUserCourseProgress(user.uid, "8KAqxrxAOmFhrkqmM8ES")
         setCompletedLessonIds(progress.completedLessons || [])
         setIsEnrolled(progress.enrolledAt !== null)
       } catch (err) {

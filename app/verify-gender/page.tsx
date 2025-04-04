@@ -38,7 +38,7 @@ export default function VerifyGenderPage() {
     try {
       if (gender.toLowerCase() !== "female") {
         await logout()
-        toast("Registration Error",{
+        toast.error("Registration Error",{
           description: "We're sorry, but this platform is currently only available for female users.",
         })
         router.push("/")
@@ -47,13 +47,13 @@ export default function VerifyGenderPage() {
 
       await updateUserData({ gender })
 
-      toast("Gender Verified",{
+      toast.success("Gender Verified",{
         description: "Thank you for verifying your gender. You can now access the platform.",
       })
 
       router.push("/dashboard")
     } catch (error: any) {
-      toast("Error",{
+      toast.error("Error",{
         description: error.message,
       })
     } finally {

@@ -43,11 +43,11 @@ export default function SignupPage() {
     try {
       await signUp(formData.email, formData.password, formData.firstName, formData.lastName, formData.gender,false)
 
-      toast("Account created!",{
+      toast.success("Account created!",{
         description: "You've successfully signed up for DeutschDiva.",
       })
     } catch (error: any) {
-      toast("Error",{
+      toast.error("Error",{
         description: error.message,
       })
     } finally {
@@ -60,7 +60,7 @@ export default function SignupPage() {
       setIsLoading(true)
       await signInWithGoogle()
     } catch (error: any) {
-      toast("Error",{
+      toast.error("Error",{
         description: error.message,
       })
     } finally {

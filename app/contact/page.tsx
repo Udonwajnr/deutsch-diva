@@ -34,7 +34,7 @@ export default function ContactPage() {
 
     // Simulate form submission
     setTimeout(() => {
-      toast("Message Sent!",{
+      toast.success("Message Sent!",{
         description: "We've received your message and will get back to you soon.",
       })
       setFormData({

@@ -50,7 +50,7 @@ export default function AdminUsersPage() {
         setCourses(coursesData)
       } catch (error) {
         console.error("Error fetching users:", error)
-        toast("Error",{
+        toast.error("Error",{
           description: "Failed to load users. Please try again.",
         })
       } finally {
@@ -80,12 +80,12 @@ export default function AdminUsersPage() {
       // Update local state
       setUsers(users.filter((user) => user.id !== userToDelete))
 
-      toast("Success",{
+      toast.success("Success",{
         description: "User has been deleted successfully.",
       })
     } catch (error) {
       console.error("Error deleting user:", error)
-      toast("Error",{
+      toast.error("Error",{
         description: "Failed to delete user. Please try again.",
       })
     } finally {

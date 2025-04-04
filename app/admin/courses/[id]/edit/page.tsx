@@ -62,7 +62,7 @@ export default function EditCoursePage() {
       try {
         const course = await getCourse(courseId)
         if (!course) {
-          toast("Error",{
+          toast.error("Error",{
             description: "Course not found.",
           })
           router.push("/admin/courses")
@@ -92,7 +92,7 @@ export default function EditCoursePage() {
         setLessons(formattedLessons)
       } catch (error) {
         console.error("Error fetching course:", error)
-        toast("Error",{
+        toast.error("Error",{
           description: "Failed to load course data. Please try again.",
         })
       } finally {
@@ -136,7 +136,7 @@ export default function EditCoursePage() {
 
   const removeLesson = (index: number) => {
     if (lessons.length === 1) {
-      toast("Error",{
+      toast.error("Error",{
         description: "You must have at least one lesson.",
       })
       return
@@ -232,13 +232,13 @@ export default function EditCoursePage() {
         await deleteDoc(doc(db, "lessons", lessonId))
       }
 
-      toast("Course Updated",{
+      toast.success("Course Updated",{
         description: "Your course has been successfully updated.",
       })
 
       router.push("/admin/courses")
     } catch (error: any) {
-      toast("Error",{
+      toast.error("Error",{
         description: error.message,
       })
     } finally {

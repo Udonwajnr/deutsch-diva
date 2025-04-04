@@ -39,7 +39,7 @@ export default function AdminCoursesPage() {
         setCourses(coursesData)
       } catch (error) {
         console.error("Error fetching courses:", error)
-        toast("Error",{
+        toast.error("Error",{
           description: "Failed to load courses. Please try again.",
         })
       } finally {
@@ -76,12 +76,12 @@ export default function AdminCoursesPage() {
       // Update local state
       setCourses(courses.filter((course) => course.id !== courseToDelete))
 
-      toast("Success",{
+      toast.success("Success",{
         description: "Course has been deleted successfully.",
       })
     } catch (error) {
       console.error("Error deleting course:", error)
-      toast("Error",{
+      toast.error("Error",{
         description: "Failed to delete course. Please try again.",
       })
     } finally {

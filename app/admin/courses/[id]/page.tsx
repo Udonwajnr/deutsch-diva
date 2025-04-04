@@ -26,7 +26,7 @@ export default function ViewCoursePage() {
       try {
         const courseData = await getCourse(courseId)
         if (!courseData) {
-          toast("Error",{
+          toast.error("Error",{
             description: "Course not found.",
           })
           router.push("/admin/courses")
@@ -35,7 +35,7 @@ export default function ViewCoursePage() {
         setCourse(courseData)
       } catch (error) {
         console.error("Error fetching course:", error)
-        toast("Error",{
+        toast.error("Error",{
           description: "Failed to load course data. Please try again.",
         })
       } finally {

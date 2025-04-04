@@ -37,7 +37,7 @@ export default function LoginPage() {
         description: "You've successfully logged in to DeutschDiva.",
       })
     } catch (error: any) {
-      toast("Error",{
+      toast.error("Error",{
         description: "Invalid email or password.",
       })
     } finally {
@@ -50,7 +50,7 @@ export default function LoginPage() {
       setIsLoading(true)
       await signInWithGoogle()
     } catch (error: any) {
-      toast("Error",{
+      toast.error("Error",{
         description: error.message,
       })
     } finally {
