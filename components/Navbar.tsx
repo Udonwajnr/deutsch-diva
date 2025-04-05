@@ -81,8 +81,8 @@ const Navbar = () => {
             <HeaderAuth />
           </div>
           <div className="hidden md:block">
-            <Link href="https://github.com/Udonwajnr/deutsch-diva.git" className="flex items-center justify-center  hover:bg-rose-100 px-3 gap-x-2">
-                <GardenGithubFill12 className="h-5 w-5 " />
+          <Link href="https://github.com/Udonwajnr/deutsch-diva.git" className="flex items-center justify-center   px-3 gap-x-2">
+                <GardenGithubFill12 className="h-5 w-5 text-rose-500" />
             </Link>
           </div>
 
@@ -101,6 +101,11 @@ const Navbar = () => {
             >
               <Menu className="h-5 w-5" />
             </button>
+
+            <Link href="https://github.com/Udonwajnr/deutsch-diva.git" className="flex items-center justify-center   px-3 gap-x-2">
+                <GardenGithubFill12 className="h-5 w-5 text-rose-500" />
+            </Link>
+
           </div>
         </div>
       </div>
@@ -175,9 +180,9 @@ const Navbar = () => {
                   </Link>
 
                   <div className="hidden md:block">
-                        <Link href="https://github.com/Udonwajnr/deutsch-diva.git" className="flex items-center justify-center  hover:bg-rose-100 px-3 gap-x-2">
-                            <GardenGithubFill12 className="h-5 w-5 " />
-                        </Link>
+                  <Link href="https://github.com/Udonwajnr/deutsch-diva.git" className="flex items-center justify-center   px-3 gap-x-2">
+                    <GardenGithubFill12 className="h-5 w-5 text-rose-500" />
+                   </Link>
                 </div>
 
                 </div>
