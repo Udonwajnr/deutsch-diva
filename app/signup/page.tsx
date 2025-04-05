@@ -6,7 +6,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { BookOpen, ChromeIcon as Google } from "lucide-react"
-
+import CiGoogle from "@/components/icons/CiGoogle"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -176,7 +176,8 @@ export default function SignupPage() {
                   onClick={handleGoogleSignIn}
                   disabled={isLoading}
                 >
-                  <Google className="mr-2 h-4 w-4" />
+                  <CiGoogle className="mr-2 h-4 w-4" />
+                  
                   Google
                 </Button>
 

@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 import { useAuth } from "@/contexts/auth-context"
+import CiGoogle from "@/components/icons/CiGoogle"
 
 export default function LoginPage() {
   const { signIn, signInWithGoogle } = useAuth()
@@ -127,7 +128,7 @@ export default function LoginPage() {
                   onClick={handleGoogleSignIn}
                   disabled={isLoading}
                 >
-                  <Google className="mr-2 h-4 w-4" />
+                  <CiGoogle className="mr-2 h-4 w-4" />
                   Google
                 </Button>
 
